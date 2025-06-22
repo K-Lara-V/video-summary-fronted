@@ -31,3 +31,15 @@ pre#output {
   font-size: 1rem;
   line-height: 1.5;
 }
+
+#loader {
+  font-style: italic;
+}
+
+button {
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
