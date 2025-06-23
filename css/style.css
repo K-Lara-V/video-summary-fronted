@@ -1,0 +1,285 @@
+/* ----------------- Estilos generales ----------------- */
+
+body {
+  background-color: #f5f8fc;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.card {
+  border-radius: 12px;
+}
+
+textarea {
+  resize: none; /* Deshabilita el cambio de tamaño en textarea */
+}
+
+#dropArea {
+  cursor: pointer; /* Aparece cursor pointer en el área de selección */
+}
+
+.center {
+  display: flex;
+  justify-content: center; /* Centra horizontalmente elementos hijos */
+}
+
+/* ----------------- Iconos Bootstrap ----------------- */
+
+.bi-download:hover {
+  color: #0d6efd;
+}
+
+/* ----------------- Botón de descarga ----------------- */
+
+.Btn {
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 50%;
+  background-color: rgb(255, 255, 255);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition-duration: .3s;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.11);
+}
+
+.svgIcon {
+  fill: #0d6efd;
+}
+
+.icon2 {
+  width: 18px;
+  height: 5px;
+  border-bottom: 2px solid #0d6efd;
+  border-left: 2px solid #0d6efd;
+  border-right: 2px solid #0d6efd;
+}
+
+.tooltip {
+  position: absolute;
+  right: -105px;
+  opacity: 0;
+  background-color: #0d6efd;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition-duration: .2s;
+  pointer-events: none;
+  letter-spacing: 0.5px;
+}
+
+/* Flecha de la tooltip */
+.tooltip::before {
+  position: absolute;
+  content: "";
+  width: 10px;
+  height: 10px;
+  background-color: rgb(12, 12, 12);
+  background-size: 1000%;
+  background-position: center;
+  transform: rotate(45deg);
+  left: -5%;
+  transition-duration: .3s;
+}
+
+/* Mostrar tooltip al hover */
+.Btn:hover .tooltip {
+  opacity: 1;
+  transition-duration: .3s;
+}
+
+/* Cambios visuales al hacer hover en el botón de descarga */
+.Btn:hover {
+  background-color: #0d6efd;
+  transition-duration: .3s;
+}
+
+.Btn:hover .icon2 {
+  border-bottom: 2px solid rgb(235, 235, 235);
+  border-left: 2px solid rgb(235, 235, 235);
+  border-right: 2px solid rgb(235, 235, 235);
+}
+
+.Btn:hover .svgIcon {
+  fill: rgb(255, 255, 255);
+  animation: slide-in-top 0.6s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+/* Animación para el icono de descarga */
+@keyframes slide-in-top {
+  0% {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+
+/* ----------------- Botón de subir y resumir ----------------- */
+
+.animated-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 16px 36px;
+  border: 4px solid;
+  border-color: transparent;
+  font-size: 16px;
+  background-color: inherit;
+  border-radius: 10px;
+  font-weight: 600;
+  color: #0d6efd;
+  box-shadow: 0 0 0 2px #0d6efd;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.animated-button svg {
+  position: absolute;
+  width: 24px;
+  fill: #000000;
+  z-index: 9;
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.animated-button .arr-1 {
+  right: 16px;
+}
+
+.animated-button .arr-2 {
+  left: -25%;
+}
+
+.animated-button .circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  background-color: #0d6efd;
+  border-radius: 50%;
+  opacity: 0;
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.animated-button .text {
+  position: relative;
+  z-index: 1;
+  transform: translateX(-12px);
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Hover efecto */
+.animated-button:hover {
+  box-shadow: 0 0 0 12px transparent;
+  color: #ffffff;
+  border-radius: 12px;
+}
+
+.animated-button:hover .arr-1 {
+  right: -25%;
+}
+
+.animated-button:hover .arr-2 {
+  left: 16px;
+}
+
+.animated-button:hover .text {
+  transform: translateX(12px);
+}
+
+.animated-button:hover svg {
+  fill: #212121;
+}
+
+/* Presión */
+.animated-button:active {
+  scale: 0.95;
+  box-shadow: 0 0 0 4px #0d6efd;
+}
+
+/* Animación círculo */
+.animated-button:hover .circle {
+  width: 220px;
+  height: 220px;
+  opacity: 1;
+}
+
+/* ----------------- Botón para "Empezar de nuevo" ----------------- */
+
+.btn {
+  --color: #3d8bfd;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all .5s;
+  border: none;
+  background-color: transparent;
+}
+
+.btn div {
+  letter-spacing: 2px;
+  font-weight: bold;
+  background: var(--color);
+  border-radius: 2rem;
+  color: white;
+  padding: 1rem;
+}
+
+.btn::before {
+  content: '';
+  z-index: -1;
+  background-color: var(--color);
+  border: 2px solid white;
+  border-radius: 2rem;
+  width: 110%;
+  height: 100%;
+  position: absolute;
+  transform: rotate(10deg);
+  transition: .5s;
+  opacity: 0.2;
+}
+
+/* Hover efecto */
+.btn:hover {
+  cursor: pointer;
+  filter: brightness(1.2);
+  transform: scale(1.1);
+}
+
+.btn:hover::before {
+  transform: rotate(0deg);
+  opacity: 1;
+}
+
+/* Animación para svg dentro del botón */
+.btn svg {
+  transform: translateX(-200%);
+  transition: .5s;
+  width: 0;
+  opacity: 0;
+}
+
+/* Mostrar svg al hover */
+.btn:hover svg {
+  width: 25px;
+  transform: translateX(0%);
+  opacity: 1;
+}
+
+/* Efecto al hacer click */
+.btn:active {
+  filter: brightness(1.4);
+}
