@@ -1,38 +1,157 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
-  <title>Resumen Automático de Video</title>
+  <title>VideoSummarizer</title>
+  
+  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  
+  <!-- Estilos personalizados -->
+  <link rel="stylesheet" href="css/style.css">
+  
+  <!-- Iconos Bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
-<body class="bg-light p-4">
 
-  <div class="container">
-    <h1 class="mb-4">🎥 Procesador de Videos con Resumen Automático</h1>
+<body>
 
-    <div class="mb-3">
-      <label for="videoInput" class="form-label">📁 Selecciona un video:</label>
-      <input type="file" class="form-control" id="videoInput" accept="video/*">
+  <div class="container py-5">
+
+    <!-- Título y descripción -->
+    <h2 class="text-center text-primary fw-bold">VideoResumidor</h2>
+    <p class="text-center text-muted">Sube tu video y obtén el resumen.</p>
+
+    <div class="card p-4 shadow-sm">
+
+      <!-- Área para arrastrar o hacer clic para seleccionar video -->
+      <div id="dropArea" class="border border-primary rounded-3 p-4 text-center mb-3" style="border-style: dashed;">
+        <div class="mb-3 fs-1 text-primary">
+          <i class="bi bi-cloud-arrow-up"></i> <!-- Ícono de subir nube -->
+        </div>
+        <p class="mb-1">Haz clic o arrastra un archivo de video aquí</p>
+        <p class="text-muted">Formatos compatibles: MP4, WebM, MOV</p>
+
+        <!-- Input oculto para selección tradicional -->
+        <input type="file" id="videoInput" class="d-none" accept="video/*">
+
+        <!-- Mensaje de alerta para seleccionar archivo -->
+        <div id="alertaArchivo" class="alert alert-warning mt-3 text-center" style="display: none;">
+          ⚠️ Por favor, selecciona un archivo de video antes de continuar.
+        </div>
+      </div>
+
+      <!-- Información y vista previa del archivo seleccionado -->
+      <div id="fileInfo" class="mb-3" style="display:none;">
+        <div class="d-flex align-items-center gap-3">
+
+          <!-- Video miniatura / vista previa -->
+          <video id="previewVideo" width="60" class="rounded" muted playsinline></video>
+
+          <!-- Nombre y tamaño del archivo -->
+          <div>
+            <p class="mb-1 fw-semibold" id="videoName">video.mp4</p>
+            <small class="text-muted" id="videoSize">7 MB</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botón para subir y resumir el video -->
+      <div class="center">
+        <button id="botonSubir" class="animated-button" onclick="procesarVideo()">
+          <svg viewBox="0 0 24 24" class="arr-2" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z">
+            </path>
+          </svg>
+          <span class="text">Subir y resumir</span>
+          <span class="circle"></span>
+          <svg viewBox="0 0 24 24" class="arr-1" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z">
+            </path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Indicadores de estado -->
+
+      <!-- Carga en proceso -->
+      <div id="loader" class="mt-3 text-info fw-semibold text-center" style="display: none;">
+        ⏳ Procesando video, por favor espere...
+      </div>
+
+      <!-- Error al procesar -->
+      <div id="error" class="mt-3 text-danger fw-semibold text-center" style="display: none;">
+        ❌ Error al procesar el video. Por favor, inténtelo de nuevo.
+      </div>
+
+      <!-- Éxito al procesar -->
+      <div id="success" class="mt-3 text-success fw-semibold text-center" style="display: none;">
+        ✅ Video procesado exitosamente.
+      </div>
+
+      <!-- Resultados: transcripción y resumen -->
+      <div id="resultado" class="card mt-5 p-4 shadow-sm" style="display: none;">
+        <h4 class="mb-3">Resultados</h4>
+        <div class="row">
+
+          <!-- Transcripción -->
+          <div class="col-md-6">
+            <h5>Transcripción</h5>
+            <div class="d-flex justify-content-end mb-2">
+              <button class="Btn" onclick="descargarTxt('transcripcion')" title="Descargar transcripción">
+                <svg class="svgIcon" viewBox="0 0 384 512" height="1em" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z">
+                  </path>
+                </svg>
+                <span class="icon2"></span>
+              </button>
+            </div>
+            <textarea class="form-control mb-3" rows="8" id="transcripcionOutput" readonly></textarea>
+          </div>
+
+          <!-- Resumen -->
+          <div class="col-md-6">
+            <h5>Resumen</h5>
+            <div class="d-flex justify-content-end mb-2">
+              <button class="Btn" onclick="descargarTxt('resumen')" title="Descargar resumen">
+                <svg class="svgIcon" viewBox="0 0 384 512" height="1em" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z">
+                  </path>
+                </svg>
+                <span class="icon2"></span>
+              </button>
+            </div>
+            <textarea class="form-control mb-3" rows="8" id="resumenOutput" readonly></textarea>
+          </div>
+
+        </div>
+
+        <!-- Botón para reiniciar la aplicación -->
+        <div class="center">
+          <button class="btn" onclick="location.reload()" title="Empezar de nuevo">
+            <div>Empezar de nuevo</div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+              <path d="M11.6801 14.62L14.2401 12.06L11.6801 9.5" stroke="white" stroke-width="2" stroke-miterlimit="10"
+                stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M4 12.0601H14.17" stroke="white" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round"
+                stroke-linejoin="round"></path>
+              <path d="M12 4C16.42 4 20 7 20 12C20 17 16.42 20 12 20" stroke="white" stroke-width="2"
+                stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
     </div>
 
-    <button class="btn btn-primary" onclick="procesarVideo()">🚀 Procesar</button>
-
-    <div id="loader" class="mt-3 text-info fw-semibold" style="display: none;">
-      ⏳ Procesando video, por favor espera...
-    </div>
-
-    <div id="resultado" class="mt-5" style="display: none;">
-      <h4>📝 Transcripción:</h4>
-      <pre id="transcripcionOutput" class="bg-white p-3 border rounded"></pre>
-      <button class="btn btn-outline-secondary me-2" onclick="descargarTxt('transcripcion')">⬇ Descargar transcripción</button>
-
-      <h4 class="mt-4">📄 Resumen:</h4>
-      <pre id="resumenOutput" class="bg-white p-3 border rounded"></pre>
-      <button class="btn btn-outline-secondary" onclick="descargarTxt('resumen')">⬇ Descargar resumen</button>
-    </div>
+    <!-- Script principal -->
+    <script src="js/script.js"></script>
   </div>
 
-  <script src="script.js"></script>
 </body>
+
 </html>

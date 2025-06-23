@@ -1,0 +1,14 @@
+{
+  "name": "video-summary-frontend",
+  "version": "1.0.0",
+  "description": "Frontend para el resumidor de videos",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^30.0.2",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "jest-environment-jsdom": "^30.0.2"
+  }
+}
