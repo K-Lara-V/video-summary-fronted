@@ -2,8 +2,6 @@
 // Este módulo contiene funciones reutilizables para manejar transcripción y resumen de videos.
 // Está diseñado para facilitar el testeo unitario con Jest.
 
-// ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-
 //  Variables globales simuladas para pruebas
 let transcripcionGlobal = "Texto de prueba transcripción";
 let resumenGlobal = "Texto de prueba resumen";
